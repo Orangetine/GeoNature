@@ -181,6 +181,10 @@ def get_observations_for_web(permissions):
         columns += ["nom_vern_or_lb_nom", nom_vern_or_lb_nom]
         param_column_list.remove("nom_vern_or_lb_nom")
 
+    # Add additional field(s) to output
+    additional_fields = request.args.getlist("with_field")
+    param_column_list.update(additional_fields)
+
     for column in param_column_list:
         columns += [column, getattr(VSyntheseForWebApp, column)]
 

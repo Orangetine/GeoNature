@@ -433,6 +433,87 @@ MEDIA_CLEAN_CRONTAB = "0 1 * * *"
         { min = 1, color = "#FED976" },
         { min = 0, color = "#FFEDA0" }
     ]
+    # Liste des critères d'affichage des observations sur la carte de la Synthese
+    # Choix des couleurs pour la carto : https://colorbrewer2.org/
+    # ⚠🛑⚠ : mettre la documentation définitive de ce paramètre ici
+    # Ex.:
+    # Add display criteria
+    [SYNTHESE.MAP_CRITERIA_LIST.valid_status]
+        label = "Status de validation"
+        type = "nomenclatures"
+        field = "id_nomenclature_valid_status"
+        activate = true
+        default = false
+        styles = { stroke = true, color = "#000000", weight = 1, opacity = 0.5, fillOpacity = 0.5 }
+        [[SYNTHESE.MAP_CRITERIA_LIST.valid_status.values]]
+            value = ["1", "2"]
+            label = "Probable"
+            decription = "Certain à probable"
+            color = "#44ce1b"
+            icon = "fa-check-square"
+            styles = { stroke = false, weight = 3, opacity = 1.0, fillOpacity = 0.80 }
+        [[SYNTHESE.MAP_CRITERIA_LIST.valid_status.values]]
+            value = "3"
+            label = "Douteux"
+            color = "#f2a134"
+            icon = "fa-exclamation-triangle"
+            styles = { stroke = false, weight = 2, opacity = 0.8, fillOpacity = 0.65 }
+        [[SYNTHESE.MAP_CRITERIA_LIST.valid_status.values]]
+            value = "4"
+            label =  "Invalide"
+            color = "#e51f1f"
+            icon = "fa-minus-circle"
+            styles = { stroke = false, opacity = 0.6 }
+        [[SYNTHESE.MAP_CRITERIA_LIST.valid_status.values]]
+            value = ["5", "6", "0"]
+            label = "Indéterminé"
+            description = "Non réalisable, Inconnu ou en attente de validation"
+            color = "#f3f6f4"
+            icon = "fa-question-circle"
+    [SYNTHESE.MAP_CRITERIA_LIST.observation_status]
+        label = "Statut de l'observation"
+        type = "nomenclatures"
+        field = "id_nomenclature_observation_status"
+        activate = true
+        default = false
+        styles = { weight = 0, opacity = 0 }
+        [[SYNTHESE.MAP_CRITERIA_LIST.observation_status.values]]
+            value = "Pr"
+            label = "Présent"
+            color = "#44ce1b"
+        [[SYNTHESE.MAP_CRITERIA_LIST.observation_status.values]]
+            value = "No"
+            label = "Non observé"
+            color = "#e51f1f"
+        [[SYNTHESE.MAP_CRITERIA_LIST.observation_status.values]]
+            value = "NSP"
+            label = "Non renseigné"
+            color = "#f3f6f4"
+    [SYNTHESE.MAP_CRITERIA_LIST.precision]
+        label = "Précision localisation"
+        type = "classes"
+        field = "precision"
+        activate = true
+        default = false
+        styles = { stroke = false, color = "#000000", weight = 2, opacity = 1.0, fillOpacity = 1.0 }
+        [[SYNTHESE.MAP_CRITERIA_LIST.precision.values]]
+            value = 250
+            label = "Supérieur à 250m"
+            decription = "Observations dont la précision est supérieure ou égale à 250m."
+            color = "#cbc9e2"
+            icon = "target"
+        [[SYNTHESE.MAP_CRITERIA_LIST.precision.values]]
+            value = 25
+            label = "Entre 25 et 250m"
+            decription = "Observations dont la précision est supérieure ou égale à 25m et inférieure à 250m."
+            color = "#9e9ac8"
+            icon  = "adjust"
+        [[SYNTHESE.MAP_CRITERIA_LIST.precision.values]]
+            value = 0
+            label = "Inférieur à 25m"
+            decription = "Observations dont la précision est supérieure ou égale à 0m et inférieure à 25m."
+            color = "#6a51a3"
+            icon = "point_scan"
 
     [SYNTHESE.DEFAULT_FILTERS]
         # Tous les statuts de validation sauf invalide '4'
@@ -623,8 +704,8 @@ MEDIA_CLEAN_CRONTAB = "0 1 * * *"
     # Encodage des fichiers importés autorisées
     ENCODAGE = ["UTF-8"]
 
-    # Bounding box des données de l'instance. 
-    # Utilisé pour lever des warning lorsque les données sont en dehors. 
+    # Bounding box des données de l'instance.
+    # Utilisé pour lever des warning lorsque les données sont en dehors.
     # Format: [XMIN, YMIN, XMAX, YMAX]
     # Par défaut: France métropolitaine incluant la Corse
     INSTANCE_BOUNDING_BOX = [-5.0, 41.0, 10.0, 51.15]
@@ -643,7 +724,7 @@ MEDIA_CLEAN_CRONTAB = "0 1 * * *"
 
     # SRID autorisés pour les fichiers en entrée
     SRID = [
-    {name = "WGS84", code = 4326}, 
+    {name = "WGS84", code = 4326},
     {name = "Lambert93", code = 2154}
     ]
     # Extensions autorisées (seul le csv est accepté actuellement)
@@ -655,7 +736,7 @@ MEDIA_CLEAN_CRONTAB = "0 1 * * *"
     # Si le mapping des valeurs est désactivé, specifier l'identifiant du mapping qui doit être utilisé
     DEFAULT_VALUE_MAPPING_ID = 3
 
-    # rempli les valeurs de nomenclature erroné par la valeur par defaut 
+    # rempli les valeurs de nomenclature erroné par la valeur par defaut
     # Leve un warning et non une erreur sur les lignes concernées
     FILL_MISSING_NOMENCLATURE_WITH_DEFAULT_VALUE = false
 
@@ -676,7 +757,7 @@ MEDIA_CLEAN_CRONTAB = "0 1 * * *"
 
     # Customiser le nom du fichier de rapport de l'import
     # Pour indiquer des données liés à l'import dans le nom du fichier ajouter le nom de la variable
-    # contenant cette dernière. Les variables suivantes sont accessibles : 
+    # contenant cette dernière. Les variables suivantes sont accessibles :
     # - date_create_import -> date de création de l'import
     # - dataset.dataset_name -> nom du jeu de données de destination
     # - dataset.active -> Si le jeu de données de destination est actif
@@ -703,7 +784,7 @@ MEDIA_CLEAN_CRONTAB = "0 1 * * *"
 
 
     # Id d'une liste de taxons permettant de restreindre l'import d'observations de taxons comprises dans cette dernière
-    # Lève une exception si un taxon n'appartenant pas à liste indiquée apparaît dans les donnés importées. 
+    # Lève une exception si un taxon n'appartenant pas à liste indiquée apparaît dans les donnés importées.
     ID_LIST_TAXA_RESTRICTION = fields.Integer(load_default=None)
 
     # URL d'accès au module d'import
